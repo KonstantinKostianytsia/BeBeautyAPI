@@ -1,7 +1,11 @@
-import os
+from app.serializer import CustomUserSerializer
+from app.models import AuthVariant
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from app.exceptions import *
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 def get_user_info(user_id):
     #user_id = required_permission(request, "auth.view_user")
@@ -15,34 +19,34 @@ def get_user_info(user_id):
     }
 
 def register_user(data):
-    serializer = UserSerializer(data = data )
-
-    if serializer.is_valid(raise_exception = True) == False:
-         raise SerializerNonValid
     try:
-        check_unique_user_info(username = serializer.data['username'],
-                           email = serializer.data['email'])
-    except EmailIsExist:
-        raise EmailIsExist
-    except UsernameIsExist:
-        raise UsernameIsExist
+        serializer = CustomUserSerializer(data=data.data)
 
-    user = User.objects.create_user(username = serializer.data["username"], email = serializer.data["email"], password = serializer.data["password"],
-                             first_name = serializer.data["first_name"], last_name = serializer.data["last_name"])
-    user.groups.set([1]) # client group
-    user.save()
+        if serializer.is_valid(raise_exception = False) == False:
+            #  raise SerializerNonValid
+            pass
 
-    
+        user = User.objects.create_user(email = serializer.data["email"],auth_variant=serializer.data["auth_variant"],
+                        first_name = serializer.data["first_name"], last_name = serializer.data["last_name"],
+                        password="Test1234", username= serializer.data["email"] + "_" + serializer.data["auth_variant"]
+                        )
+        user.save()
+    except Exception as e:
+        print(e)
+
     return 
 
-def check_unique_user_info(username = None , email = None):
+def check_unique_user_info(auth_variant: AuthVariant, email):
 
-    if email  is not None:
-        obj = User.objects.filter(email = email)
+    if email is not None:
+        obj = User.objects.filter(email = email, auth_variant = auth_variant)
         if len(obj) != 0:
             raise EmailIsExist
 
-    if username is not None:
-        obj = User.objects.filter(username = username)
-        if len(obj) != 0:
-            raise UsernameIsExist
+
+def check_is_user_exists(auth_variant: AuthVariant, email: str) -> User:
+    print(auth_variant, email)
+    obj = User.objects.filter(email = email, auth_variant = auth_variant)
+    if len(obj) == 0:
+        raise ObjectDoesNotExist
+    return obj[0]
