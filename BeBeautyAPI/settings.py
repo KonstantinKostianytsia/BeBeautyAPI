@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'app',
+    'SalonServices',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,8 @@ REST_FRAMEWORK = {
 
 
 WSGI_APPLICATION = 'BeBeautyAPI.wsgi.application'
+
+APPEND_SLASH=False
 
 ALLOWED_HOSTS = ['*']
 
