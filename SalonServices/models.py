@@ -9,6 +9,7 @@ class Employee(models.Model):
     sum_of_stars = models.IntegerField(default=0)
     is_manager = models.BooleanField(default=False)
     salon_id = models.IntegerField(default=0)
+    is_even_days = models.BooleanField(default=False)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -37,12 +38,19 @@ class Service(models.Model):
 class Appointments(models.Model):
     id = models.AutoField(primary_key=True)
     employee_id = models.IntegerField(default=0)
-    service_id = models.IntegerField(default=0)
+    services_ids = models.CharField(max_length=50,default="") #joined services ids with comma
     user_id = models.IntegerField(default=0)
-    start_date = models.DateField('Start Date', default=datetime.date.today)
-    end_date = models.DateField('End Date', default=datetime.date.today)
+    start_date = models.DateTimeField('Start Date', default=datetime.datetime.today)
+    end_date = models.DateTimeField('End Date', default=datetime.datetime.today)
 
     def __str__(self):
-        return self.id
+        return str(self.user_id + " " + self.services_ids)
+
+class Skill(models.Model):
+    employee_id = models.IntegerField(default=0)
+    service_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.employee_id)
 
 
