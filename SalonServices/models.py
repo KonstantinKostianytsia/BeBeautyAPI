@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from phone_field import PhoneField
 
 class Employee(models.Model):
     id = models.AutoField(primary_key=True)
@@ -10,6 +11,7 @@ class Employee(models.Model):
     is_manager = models.BooleanField(default=False)
     salon_id = models.IntegerField(default=0)
     is_even_days = models.BooleanField(default=False)
+    phone_number = PhoneField(blank=True, help_text="Contact phone number")
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

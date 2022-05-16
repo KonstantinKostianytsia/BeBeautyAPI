@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'app',
     'SalonServices',
+    'phone_field',
 ]
 
 MIDDLEWARE = [

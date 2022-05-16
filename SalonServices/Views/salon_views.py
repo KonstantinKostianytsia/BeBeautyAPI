@@ -1,6 +1,5 @@
 import datetime
 import os
-from urllib.request import Request
 from app.Services.error_handler import handle_error, unhandled_error
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -92,7 +91,7 @@ class EmployeesSlots(APIView):
             date: Date,
     '''
 
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         try:
@@ -131,6 +130,25 @@ class EmployeesSlots(APIView):
             print(e)
             return unhandled_error()
         return Response(message, status=201)
+        
+
+class UserAppointments(APIView):
+    '''
+        return user appointments
+    '''
+
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self,request):
+        try:
+            token = request.headers['Authorization'][7:]
+            token_info = token_service.DecodeToken(token)
+            appointments = salon_services.get_user_appointments(token_info["user_id"])
+        except Exception as e:
+            print(e)
+            return unhandled_error()
+        
+        return Response(appointments)
         
 
 

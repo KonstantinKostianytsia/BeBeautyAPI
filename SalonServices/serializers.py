@@ -4,7 +4,7 @@ from .models import *
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('id', 'first_name', 'last_name', 'amount_of_votes', 'sum_of_stars', 'is_manager', 'salon_id', 'is_even_days')
+        fields = ('id', 'first_name', 'last_name', 'amount_of_votes', 'sum_of_stars', 'is_manager', 'salon_id', 'is_even_days', 'phone_number')
     
 class SalonSerializer(serializers.ModelSerializer):
     class Meta:
