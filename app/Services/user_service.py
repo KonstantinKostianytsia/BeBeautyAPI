@@ -18,6 +18,17 @@ def get_user_info(user_id):
         "email" : user.email, 
     }
 
+def change_user_info(user_id, data):
+    user = User.objects.get(id=user_id)
+
+    if 'first_name' in data:
+        user.first_name = str(data['first_name'])
+    
+    if 'last_name' in data:
+        user.last_name = str(data['last_name'])
+
+    user.save()
+
 def register_user(data):
     try:
         serializer = CustomUserSerializer(data=data.data)

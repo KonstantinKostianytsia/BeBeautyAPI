@@ -10,5 +10,5 @@ urlpatterns = [
     # path('refresh/',user_views.RefreshAccessTokenView.as_view() ), # ?
     # path('user_info/', user_views.UserInfoView.as_view()), # +
     path('logout', user_views.LogoutView.as_view()), # + need to make autorefresh
-
+    path('user', user_views.UserInfo.as_view()),
 ]

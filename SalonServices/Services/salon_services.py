@@ -60,3 +60,6 @@ def get_user_appointments(user_id):
         })
         
     return response
+
+def delete_user_appointment(appointment_id):
+    Appointments.objects.get(id=appointment_id).delete()

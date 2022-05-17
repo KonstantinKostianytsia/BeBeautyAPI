@@ -81,3 +81,44 @@ class LogoutView(APIView):
         # token_service.delete_refresh_token(info['user_id'])
         return Response("Success", status = 200)
         # delete tokens in client
+
+class UserInfo(APIView):
+    
+
+    permission_classes = (IsAuthenticated,)
+
+    '''
+        returns user first_name, last_name and email
+    '''
+    def get(self, request):
+        try:
+            token = request.headers['Authorization'][7:]
+            token_info = token_service.DecodeToken(token)
+            user_info = user_service.get_user_info(token_info["user_id"])
+        
+        except Exception as e:
+            print(e)
+            return unhandled_error()
+
+        return Response({
+            "last_name": user_info["last_name"],
+            "first_name": user_info["first_name"],
+            "email": user_info["email"],
+            "id": user_info["id"],
+        }, status=200)
+
+    '''
+        change user first_name, last_name
+    '''
+    def put(self, request):
+        try:
+            token = request.headers['Authorization'][7:]
+            token_info = token_service.DecodeToken(token)
+            user_service.change_user_info(token_info["user_id"], request.data)
+        except Exception as e:
+            print(e)
+            return unhandled_error()
+        
+        return Response("User info has been changed", status=200)
+
+

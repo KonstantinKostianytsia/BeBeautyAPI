@@ -122,7 +122,6 @@ class EmployeesSlots(APIView):
     '''
     def post(self, request):
         try:
-            print(request.headers)
             token = request.headers['Authorization'][7:]
             token_info = token_service.DecodeToken(token)
             message = salon_services.create_appointment(token_info["user_id"],request.data)
@@ -149,6 +148,16 @@ class UserAppointments(APIView):
             return unhandled_error()
         
         return Response(appointments)
+
+    def delete(self, request):
+        try:
+            salon_services.delete_user_appointment(int(request.data["id"]))
+        
+        except Exception as e:
+            print(e)
+            return unhandled_error()
+
+        return Response("Successfully deleted", status=200)
         
 
 
