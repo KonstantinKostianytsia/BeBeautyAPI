@@ -3,7 +3,7 @@
 *.pyc
 __pycache__
 db.sqlite3
-media# 
+media/*
 
 credentials.txt
 config.yaml

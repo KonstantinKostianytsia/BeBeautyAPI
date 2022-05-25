@@ -12,6 +12,7 @@ class Employee(models.Model):
     salon_id = models.IntegerField(default=0)
     is_even_days = models.BooleanField(default=False)
     phone_number = PhoneField(blank=True, help_text="Contact phone number")
+    avatar = models.ImageField(upload_to='images', blank=True)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -46,7 +47,7 @@ class Appointments(models.Model):
     end_date = models.DateTimeField('End Date', default=datetime.datetime.today)
 
     def __str__(self):
-        return str(self.user_id + " " + self.services_ids)
+        return str(self.user_id) + " " + str(self.services_ids)
 
 class Skill(models.Model):
     employee_id = models.IntegerField(default=0)
